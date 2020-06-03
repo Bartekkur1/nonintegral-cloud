@@ -26,10 +26,7 @@ public class User extends Credentials implements UserDetails {
     private Boolean active;
     private String utilToken;
     private List<UserRole> roles;
-
-    public UserDetails asUserDetails() {
-        return this;
-    }
+    private Boolean banned;
 
     public User() {}
 
@@ -38,6 +35,7 @@ public class User extends Credentials implements UserDetails {
         this.roles.add(UserRole.ROLE_USER);
         this.email = credentials.getEmail();
         this.password = credentials.getPassword();
+        this.banned = false;
 
         if(credentials instanceof RegisterRequest) {
             this.createdAt = new Date();
@@ -89,6 +87,6 @@ public class User extends Credentials implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.active;
+        return (this.active && !this.banned);
     }
 }

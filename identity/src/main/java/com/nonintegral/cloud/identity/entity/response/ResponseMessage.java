@@ -17,7 +17,10 @@ public enum ResponseMessage {
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized"),
     PASSWORD_CHANGED(HttpStatus.OK, "Your password has been successfully changed"),
     RECOVERY_LINK_SENT(HttpStatus.OK, "Recovery token was sent to your email address"),
-    BADREQUEST(HttpStatus.BAD_REQUEST, "Bad request"),
+    USER_REMOVED(HttpStatus.OK, "User removed"),
+    USER_BANNED(HttpStatus.OK, "User banned"),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "Bad request"),
+    NOT_FOUND(HttpStatus.NOT_FOUND, "Not found"),
     OK(HttpStatus.OK, "OK");
 
     private HttpStatus httpStatus;

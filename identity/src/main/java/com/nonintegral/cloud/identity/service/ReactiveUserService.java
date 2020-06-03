@@ -18,5 +18,7 @@ public interface ReactiveUserService {
     Mono<ResponseMessage> changeUserPassword(User user, String newPassword);
     Mono<ResponseMessage> accountRecovery(String email);
     Mono<ResponseMessage> changePasswordByToken(String token, String newPassword);
+    Mono<ResponseMessage> removeUser(String id);
+    Mono<ResponseMessage> banUser(String id);
 
 }

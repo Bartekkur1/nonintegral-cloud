@@ -109,7 +109,7 @@ public class UserServiceBase implements ReactiveUserService {
                         u.setUtilToken(UUID.randomUUID().toString());
                         return userRepository.save(u);
                     }
-                    return Mono.error(new IdentityException(ResponseMessage.BADREQUEST));
+                    return Mono.error(new IdentityException(ResponseMessage.BAD_REQUEST));
                 })
                 .map(u -> ResponseMessage.RECOVERY_LINK_SENT)
                 .onErrorResume(e -> Mono.just(Enum.valueOf(ResponseMessage.class, e.getMessage())));
@@ -126,8 +126,21 @@ public class UserServiceBase implements ReactiveUserService {
                 .onErrorResume(e -> Mono.just(Enum.valueOf(ResponseMessage.class, e.getMessage())));
     }
 
-    public Mono<Void> deleteUser(String id) {
-        return userRepository.deleteById(id);
+    public Mono<ResponseMessage> removeUser(String id) {
+        return userRepository.findById(id)
+                .switchIfEmpty(Mono.error(new IdentityException(ResponseMessage.NOT_FOUND)))
+                .flatMap(userRepository::delete)
+                .map(r -> ResponseMessage.USER_REMOVED);
+    }
+
+    public Mono<ResponseMessage> banUser(String id) {
+        return userRepository.findById(id)
+                .switchIfEmpty(Mono.error(new IdentityException(ResponseMessage.NOT_FOUND)))
+                .flatMap(u -> {
+                    u.setBanned(true);
+                    return userRepository.save(u);
+                })
+                .map(r -> ResponseMessage.USER_BANNED);
     }
 
 }
